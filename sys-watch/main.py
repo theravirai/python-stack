@@ -1,5 +1,6 @@
 import psutil
 import shutil
+from datetime import datetime
 
 def get_cpu_usage():
     cpu_usage = psutil.cpu_percent(interval=1)
@@ -16,12 +17,23 @@ def get_disk_usage():
 
     return round(used_percentage, 2)
 
-print("\n===== SYS WATCH =====\n")
+def get_boot_time():
+    boot_time = datetime.fromtimestamp(psutil.boot_time())
+
+    formatted_time = boot_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    return formatted_time
+
+print("\n========== SYS WATCH ==========\n")
 
 cpu = get_cpu_usage()
 memory = get_memory_usage()
 disk = get_disk_usage()
+boot_time = get_boot_time()
 
-print(f"CPU Usage: {cpu}%")
-print(f"Memory Usage: {memory}%")
-print(f"Disk Usage: {disk}%")
+print(f"CPU Usage      : {cpu}%")
+print(f"Memory Usage   : {memory}%")
+print(f"Disk Usage     : {disk}%")
+print(f"System Booted  : {boot_time}")
+
+print("\n===============================\n")
