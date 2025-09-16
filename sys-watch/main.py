@@ -24,16 +24,44 @@ def get_boot_time():
 
     return formatted_time
 
+def get_top_processes():
+    processes = []
+
+    for process in psutil.process_iter(['pid', 'name', 'cpu_percent']):
+        try:
+            processes.append(process.info)
+
+        except:
+            pass
+
+    top_processes = sorted(
+        processes,
+        key=lambda process: process['cpu_percent'],
+        reverse=True
+    )[:5]
+
+    return top_processes
+
 print("\n========== SYS WATCH ==========\n")
 
 cpu = get_cpu_usage()
 memory = get_memory_usage()
 disk = get_disk_usage()
 boot_time = get_boot_time()
+top_processes = get_top_processes()
 
 print(f"CPU Usage      : {cpu}%")
 print(f"Memory Usage   : {memory}%")
 print(f"Disk Usage     : {disk}%")
 print(f"System Booted  : {boot_time}")
+
+print("\nTop Processes:\n")
+
+for process in top_processes:
+    print(
+        f"PID: {process['pid']} | "
+        f"Name: {process['name']} | "
+        f"CPU: {process['cpu_percent']}%"
+    )
 
 print("\n===============================\n")
