@@ -31,7 +31,12 @@ def get_top_processes():
 
     for process in psutil.process_iter(['pid', 'name', 'cpu_percent']):
         try:
-            processes.append(process.info)
+            info = process.info
+
+            if info['cpu_percent'] is None:
+                info['cpu_percent'] = 0.0
+
+            processes.append(info)
 
         except:
             pass
