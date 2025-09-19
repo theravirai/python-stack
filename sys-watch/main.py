@@ -1,5 +1,7 @@
 import psutil
 import shutil
+import json
+
 from datetime import datetime
 
 def get_cpu_usage():
@@ -42,26 +44,40 @@ def get_top_processes():
 
     return top_processes
 
+def export_report(system_data):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    filename = f"logs/report_{timestamp}.json"
+
+    with open(filename, "w") as file:
+        json.dump(system_data, file, indent=4)
+
+    print(f"\nSystem report exported to: {filename}")
+
+system_data = {
+    "cpu_usage": get_cpu_usage(),
+    "memory_usage": get_memory_usage(),
+    "disk_usage": get_disk_usage(),
+    "boot_time": get_boot_time(),
+    "top_processes": get_top_processes()
+}
+
 print("\n========== SYS WATCH ==========\n")
 
-cpu = get_cpu_usage()
-memory = get_memory_usage()
-disk = get_disk_usage()
-boot_time = get_boot_time()
-top_processes = get_top_processes()
-
-print(f"CPU Usage      : {cpu}%")
-print(f"Memory Usage   : {memory}%")
-print(f"Disk Usage     : {disk}%")
-print(f"System Booted  : {boot_time}")
+print(f"CPU Usage      : {system_data['cpu_usage']}%")
+print(f"Memory Usage   : {system_data['memory_usage']}%")
+print(f"Disk Usage     : {system_data['disk_usage']}%")
+print(f"System Booted  : {system_data['boot_time']}")
 
 print("\nTop Processes:\n")
 
-for process in top_processes:
+for process in system_data['top_processes']:
     print(
         f"PID: {process['pid']} | "
         f"Name: {process['name']} | "
         f"CPU: {process['cpu_percent']}%"
     )
+
+export_report(system_data)
 
 print("\n===============================\n")
