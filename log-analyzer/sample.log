@@ -1,0 +1,8 @@
+INFO: Server started successfully
+INFO: Database connection established
+WARNING: High memory usage detected
+ERROR: Failed to fetch user data
+INFO: Scheduled backup completed
+WARNING: Disk usage exceeded 80%
+ERROR: API request timeout
+INFO: Monitoring service restarted
