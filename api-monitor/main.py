@@ -1,6 +1,7 @@
 import requests
 import time
 import json
+import argparse
 
 from datetime import datetime
 
@@ -49,4 +50,14 @@ def check_api(url):
 
         print("\n=====================\n")
 
-check_api("https://api.github.com")
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    "--url",
+    required=True,
+    help="API URL to monitor"
+)
+
+args = parser.parse_args()
+
+check_api(args.url)
